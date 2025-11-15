@@ -43,7 +43,6 @@ function App() {
       try {
         const res = await axios.get("http://localhost:3000/api/blocks");
         const data = res.data;
-        console.log(data);
         
         prepareChart(data)
       } catch (error) {
