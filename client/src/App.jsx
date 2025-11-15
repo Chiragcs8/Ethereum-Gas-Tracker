@@ -35,16 +35,25 @@ ChartJS.register(
 import "./App.css";
 
 function App() {
-
   const [chartData, setChartData] = useState(null);
+
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     const ws = new WebSocket("ws://localhost:5000");
+  //     ws.onmessage = (event) => {
+  //       const resData = JSON.parse(event.data)
+  //       prepareChart(resData)
+  //     }
+  //   }, 2000)
+  // }, [])
 
   useEffect(() => {
     const fetchBlockInfo = async () => {
       try {
         const res = await axios.get("http://localhost:3000/api/blocks");
         const data = res.data;
-        
-        prepareChart(data)
+
+        prepareChart(data);
       } catch (error) {
         console.error(error);
       }
@@ -53,31 +62,32 @@ function App() {
   });
 
   const prepareChart = (blocks) => {
-    if (blocks.length > 0){
-      const timestamps = blocks.map(({timestamp})=> {
-        return formatDistanceToNow(new Date(timestamp * 1000), { addSuffix: true })
-      })
-      
-      const gasUsed = blocks.map(({ gasused })=> {
-        return gasused
-      })
-      
-       setChartData({
+    if (blocks.length > 0) {
+      const timestamps = blocks.map(({ timestamp }) => {
+        return formatDistanceToNow(new Date(timestamp * 1000), {
+          addSuffix: true,
+        });
+      });
+
+      const gasUsed = blocks.map(({ gasused }) => {
+        return gasused;
+      });
+
+      setChartData({
         labels: timestamps,
         datasets: [
           {
-            label: 'Gas Used',
+            label: "Gas Used",
             data: gasUsed,
-            borderColor: 'rgba(75, 192, 192, 1)',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+            borderColor: "rgba(75, 192, 192, 1)",
+            backgroundColor: "rgba(75, 192, 192, 0.2)",
             fill: true,
           },
         ],
       });
-      
     }
-  }
-  return  (
+  };
+  return (
     <div className="App">
       <h1>Ethereum Gas Tracker</h1>
       {chartData ? (
@@ -88,7 +98,7 @@ function App() {
             plugins: {
               title: {
                 display: true,
-                text: 'Gas Used Over Time',
+                text: "Gas Used Over Time",
               },
               tooltip: {
                 callbacks: {

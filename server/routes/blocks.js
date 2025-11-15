@@ -10,7 +10,7 @@ router.get("/", async (req, res) => {
            (data->'data'->0->'block'->>'gasUsed')::TEXT AS gasUsed
            FROM "demo_table"
            ORDER BY "from_block_number " DESC
-           LIMIT 100;
+           LIMIT 25;
         `);
     res.json(rows);
   } catch (error) {
